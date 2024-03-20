@@ -1,25 +1,25 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-import server from "@reverb-app/functions";
+import reverb from "@reverb-app/functions";
 
-// event triggered functions have an event property in their props.
-server.createFunction({
+// Event triggered functions have an 'event' property in their props
+reverb.createFunction({
   id: "my-first-function",
   event: "my-first-event",
   fn: async (event, step) => {
-    // you can define steps with step.run
-    step.run("my-first-step", async () => {
+    // You can define steps with step.run
+    await step.run("my-first-step", async () => {
       return new Promise((resolve) => {
         setTimeout(() => resolve(undefined), 1000);
       }).then(() => console.log("first step complete"));
     });
 
-    // you can wait a designated amount of time before the next step by using
+    // You can wait a designated amount of time before the next step by using
     // step.delay
-    step.delay("my-first-delay", "1h"); // wait 1 hour
+    await step.delay("my-first-delay", "1h"); // wait 1 hour
 
-    step.run("my-second-step", async () => {
+    await step.run("my-second-step", async () => {
       console.log("we done here");
     });
 
@@ -27,8 +27,8 @@ server.createFunction({
   },
 });
 
-// cron triggered functions have a cron property in their props.
-server.createFunction({
+// Cron triggered functions have a 'cron' property in their props
+reverb.createFunction({
   id: "my-first-cron-function",
   cron: "0 * * * *", // runs at the top of the hour
   fn: async (event, step) => {
@@ -36,4 +36,4 @@ server.createFunction({
   },
 });
 
-server.serve();
+reverb.serve();
