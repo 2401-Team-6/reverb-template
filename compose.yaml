@@ -1,0 +1,47 @@
+services:
+  database:
+    image: quasari/database
+    restart: always
+    ports:
+      - "5431:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  workers:
+    image: quasari/workers
+    restart: always
+    environment:
+      - GRAPHILE_CONNECTION_STRING=postgresql://docker:team6@host.docker.internal:5431/graphile
+      - FUNCTION_SERVER_URL=http://host.docker.internal:3002/calls
+      - MONGO_CONNECTION_STRING=mongodb://host.docker.internal:27018/logs
+    depends_on:
+      database:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ingress:
+    image: quasari/ingress
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - GRAPHILE_CONNECTION_STRING=postgresql://docker:team6@host.docker.internal:5431/graphile
+    depends_on:
+      database:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

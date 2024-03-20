@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@reverb-app/functions": "0",
+    "@reverb-app/functions": "^0.0.4",
     "dotenv": "^16.4.5",
     "typescript": "^5.4.2"
   },
