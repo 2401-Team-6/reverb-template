@@ -19,6 +19,7 @@ reverb.createFunction({
     // step.delay
     await step.delay("my-first-delay", "1h"); // wait 1 hour
 
+    // Remember to always use await with step methods
     await step.run("my-second-step", async () => {
       console.log("we done here");
     });
@@ -36,4 +37,5 @@ reverb.createFunction({
   },
 });
 
+// reverb.serve() starts the server
 reverb.serve();
