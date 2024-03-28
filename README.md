@@ -1,7 +1,5 @@
 # reverb-template
 
----
-
 This is the template project for a reverb function server. A reverb function server is a customizable server for defining functions, events, and crons for Reverb.
 
 ## Installation
@@ -15,6 +13,8 @@ npm create reverb <app-name>
 This will copy the repo to `./<app-name>` and allow you to start customizing your server. You should then use `npm install` in that directory.
 
 ## Usage
+
+Please do not install any dev dependencies that are needed to compile the application, they should be installed as regular dependecies as the docker image compiles the typescript in a production environment.
 
 ### Environmental Variables
 
@@ -90,7 +90,7 @@ Once you have created your functions, you can start your server with the `reverb
 
 ## Deployment
 
-Currently we need a docker image of the function server deployed to an image repository in order to deploy the application. To do this we have provided a `Dockerfile` for you to create your own image.
+Currently we need a docker image of the function server deployed to dockerhub in order to deploy the application. To do this we have provided a `Dockerfile` for you to create your own image. You first need to deploy the [Reverb Infrastructure CDK](https://github.com/2401-Team-6/reverb-infrastructure), then a github action on this repository can deploy this to the deployed infrastructure.
 
 ### Github action
 
@@ -99,5 +99,25 @@ To automate doing so, we have provided a github action in order to automate the 
 - `DOCKER_USER` - Your dockerhub account username
 - `DOCKER_PASS` - Your dockerhub access token
 - `DOCKER_TAG` - The Image tag you want to give the docker image
-  - it should be something like `USER/APPNAME`
-  - This is what you would pass to the [Reverb Infrastructure CDK](https://github.com/2401-Team-6/reverb-infrastructure)
+  - it should be something like `<user>/<appname>`
+- `UPDATE_LAMBDA_NAME` - the lambda name that is output by the CDK
+- `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
+  - You should create an IAM user specifically for this task with the `lambda:InvokeFunction` allowed.
+  - These are the access key and secret for this account
+- `ENVIRONMENT` - The environment variables you want to pass to the server. Should be a json array of environmental variable objects
+  - If you have none, should be `[]`
+
+Example of the ENVIRONMENT secret:
+
+```json
+[
+  {
+    "name": "API_KEY",
+    "value": "SOME_VALUE"
+  },
+  {
+    "name": "WHO_AM_I",
+    "value": "reverb"
+  }
+]
+```
