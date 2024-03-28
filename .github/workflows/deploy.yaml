@@ -1,9 +1,13 @@
 name: Reverb Functions Server Deploy
 run-name: ${{ github.actor }} is deploying their functions Server
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch:
 
 jobs:
-  docker:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,3 +24,11 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_TAG }}
+
+      - name: Invoke update Lambda
+        uses: gagoar/invoke-aws-lambda@master
+        with:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          FunctionName: ${{ secrets.UPDATE_LAMBDA_NAME }}
+          Payload: '{ "image": "${{ secrets.DOCKER_TAG }}", "environment": ${{ secrets.ENVIRONMENT }} }'
