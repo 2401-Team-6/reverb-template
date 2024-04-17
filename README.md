@@ -1,5 +1,7 @@
 # reverb-template
 
+This is part of the [Reverb project](https://github.com/reverb-app/reverb). Read the case study [here](https://reverb-app.github.io)
+
 This is the template project for a reverb function server. A reverb function server is a customizable server for defining functions, events, and crons for Reverb.
 
 ## Installation
@@ -90,7 +92,18 @@ Once you have created your functions, you can start your server with the `reverb
 
 ## Deployment
 
-Currently we need a docker image of the function server deployed to dockerhub in order to deploy the application. To do this we have provided a `Dockerfile` for you to create your own image. You first need to deploy the [Reverb Infrastructure CDK](https://github.com/2401-Team-6/reverb-infrastructure), then a github action on this repository can deploy this to the deployed infrastructure.
+Currently we need a docker image of the function server deployed to dockerhub in order to deploy the application. To do this we have provided a `Dockerfile` for you to create your own image. You first need to deploy the [Reverb Infrastructure CDK](https://github.com/reverb-app/reverb-infrastructure), then a github action on this repository can deploy this to the deployed infrastructure.
+
+The infrastructure deployment can be made easy by following these steps:
+
+1. Follow [this guide](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) to getting started with the CDK. This will have you:
+
+   - [Sign into the AWS CLI](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_auth)
+   - [Install the CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
+   - [Bootstrap the CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_bootstrap)
+
+2. Download the Reverb cli tool with the command `npm install -g @reverb-app/cli`
+3. Run the command `reverb-cli cdk:deploy`
 
 ### Github action
 
