@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@reverb-app/functions": "^0.0.5",
+    "@reverb-app/functions": "^1.0.0",
     "@types/node": "^20.11.30",
     "dotenv": "^16.4.5",
     "typescript": "^5.4.2"
